@@ -11,7 +11,7 @@ from datetime import datetime
 import traceback,sys
 
 engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-    'marmot', 'marmot123', '127.0.0.1', 3306, 'team_station', 'utf8'))
+    'marmot', 'marmot123', '172.16.128.240', 3306, 'team_station', 'utf8'))
 
 
 def to_table_append(df, db_name):
@@ -26,7 +26,7 @@ def to_table_append(df, db_name):
 
 
 # 删除数据库中某些表的数据
-def delete_table(table_name, sql_delete=None, db='team_station', port=3306, ip='127.0.0.1',
+def delete_table(table_name, sql_delete=None, db='team_station', port=3306, ip='172.16.128.240',
                  user_name='marmot', password='marmot123'):
     conn = pymysql.connect(host=ip, port=port, user=user_name, password=password, db=db, charset='utf8')
     # 创建游标
@@ -46,7 +46,7 @@ def delete_table(table_name, sql_delete=None, db='team_station', port=3306, ip='
 
 def read_table(sql, db='team_station'):
     engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-        'marmot', 'marmot123', '127.0.0.1', 3306, db, 'utf8'))
+        'marmot', 'marmot123', '172.16.128.240', 3306, db, 'utf8'))
     con = engine.connect()  # 创建连接
     try:
         df_data = pd.read_sql(sql, con)
@@ -60,7 +60,7 @@ def read_table(sql, db='team_station'):
 
 def read_db_table(sql, db_name):
     engine_db = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-        'marmot', 'marmot123', '127.0.0.1', 3306, db_name, 'utf8'))
+        'marmot', 'marmot123', '172.16.128.240', 3306, db_name, 'utf8'))
     con = engine_db.connect()  # 创建连接
     try:
         df_data = pd.read_sql(sql, con)
@@ -74,7 +74,7 @@ def read_db_table(sql, db_name):
 
 def read_ad_db_table(sql, db_name):
     engine_db = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-        'marmot', 'marmot123', '127.0.0.1', 3306, db_name, 'utf8'))
+        'marmot', 'marmot123', '172.16.128.240', 3306, db_name, 'utf8'))
     con = engine_db.connect()  # 创建连接
     try:
         df_data = pd.read_sql(sql, con)
@@ -87,7 +87,7 @@ def read_ad_db_table(sql, db_name):
 
 def to_db_table_fail(df, db_name, sheet_name):
     engine_db = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-        'marmot', 'marmot123', '127.0.0.1', 3306, db_name, 'utf8'))
+        'marmot', 'marmot123', '172.16.128.240', 3306, db_name, 'utf8'))
     con = engine_db.connect()  # 创建连接
     try:
         df.to_sql(name=sheet_name, con=con, if_exists='fail', index=False)
@@ -100,7 +100,7 @@ def to_db_table_fail(df, db_name, sheet_name):
 
 def read_table_kw(sql):
     engine_kw = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(
-        'marmot', 'marmot123', '127.0.0.1', 3306, 'sku_ad_history', 'utf8'))
+        'marmot', 'marmot123', '172.16.128.240', 3306, 'sku_ad_history', 'utf8'))
     con = engine_kw.connect()  # 创建连接
     try:
         df_data = pd.read_sql(sql, con)
@@ -115,7 +115,7 @@ def read_table_kw(sql):
 
 def read_local_db(sql):
     local_engine = create_engine(
-        f"mysql+pymysql://{'marmot'}:{''}@{'127.0.0.1'}:{3306}/{'team_station'}?charset={'utf8'}")
+        f"mysql+pymysql://{'marmot'}:{''}@{'172.16.128.240'}:{3306}/{'team_station'}?charset={'utf8'}")
     local_con = local_engine.connect()  # 创建连接
     try:
         df_data = pd.read_sql(sql, local_con)
@@ -129,7 +129,7 @@ def read_local_db(sql):
 
 def to_local_table_replace(df, db_name):
     local_engine = create_engine(
-        f"mysql+pymysql://{'marmot'}:{''}@{'127.0.0.1'}:{3306}/{'team_station'}?charset={'utf8'}")
+        f"mysql+pymysql://{'marmot'}:{''}@{'172.16.128.240'}:{3306}/{'team_station'}?charset={'utf8'}")
     con = local_engine.connect()  # 创建连接
     try:
         df.to_sql(name=db_name, con=con, if_exists='replace', index=False)
@@ -252,7 +252,7 @@ class QueryMySQL(object):
 
     """
 
-    def __init__(self, host='127.0.0.1', port=3306, username='marmot', password='marmot123',
+    def __init__(self, host='172.16.128.240', port=3306, username='marmot', password='marmot123',
                  database='team_station'):
         """
         初始化连接MySQL数据
@@ -373,9 +373,9 @@ class Redis_Store(redis.StrictRedis):
         4.存入string
     """
 
-    def __init__(self, host='127.0.0.1', port=6379, db=2,
+    def __init__(self, host='172.16.128.240', port=6379, db=2,
                  password='', decode_responses=True, expire_time=None):
-        redis.StrictRedis.__init__(self, host='127.0.0.1', port='6379', password='', db=db,
+        redis.StrictRedis.__init__(self, host='172.16.128.240', port='6379', password='', db=db,
                                    decode_responses=decode_responses)
         self.redis_pool = redis.ConnectionPool(host=host, port=port, password=password,
                                                db=db, decode_responses=decode_responses)
@@ -453,9 +453,9 @@ class QueryDatabaseFrequentlyInfo(QueryMySQL, Redis_Store):
     """
 
     def __init__(self, mysql_table, columns=None, sql=None, redisSignKey=None, strFormat='%Y-%m-%d_%H-%M-%S',
-                 redis_host='127.0.0.1', redis_port=6379, redis_db=0, redis_interval_updatetime=None,
+                 redis_host='172.16.128.240', redis_port=6379, redis_db=0, redis_interval_updatetime=None,
                  redis_password='', decode_responses=True, expire_time=None, min_expire_time=None,
-                 mysql_host='127.0.0.1', mysql_port=3306, mysql_username='marmot', mysql_password='marmot123',
+                 mysql_host='172.16.128.240', mysql_port=3306, mysql_username='marmot', mysql_password='marmot123',
                  mysql_db='team_station', redis_time_split_sign='$$'):
 
         QueryMySQL.__init__(self, host=mysql_host, port=mysql_port, username=mysql_username,

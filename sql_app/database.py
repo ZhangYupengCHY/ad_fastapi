@@ -15,8 +15,8 @@ from sql_app.models import Base,Base_kws
 # 默认的
 
 CONN_DB = {
-    'team_station':{'ip':'127.0.0.1','port':3306,'user':'marmot','password':'marmot123','db':'team_station'},
-    'kws':{'ip':'127.0.0.1','port':3306,'user':'marmot','password':'marmot123','db':'server_camp_report'},
+    'team_station':{'ip':'172.16.128.240','port':3306,'user':'marmot','password':'marmot123','db':'team_station'},
+    'kws':{'ip':'172.16.128.240','port':3306,'user':'marmot','password':'marmot123','db':'server_camp_report'},
     # 楚讯站点的sku捆绑表
     'cx_sku_match':{'ip':'124.71.59.209','port':3306,'user':'zhangyupeng','password':'zypYB&^^234','db':'yibai_product_cx'},
     # 站点sku的库存
