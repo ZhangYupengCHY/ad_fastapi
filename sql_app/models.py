@@ -14,6 +14,8 @@ from sqlalchemy import Column, Integer, String, DateTime,Text,Float,TIMESTAMP,te
 from sqlalchemy.dialects.mysql import BIGINT,INTEGER,TINYINT,VARCHAR,SMALLINT,MEDIUMINT
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
+from typing import Optional
+
 
 Base = declarative_base()
 Base_kws = declarative_base()
@@ -202,3 +204,9 @@ class Path(BaseModel):
 
 class Station(BaseModel):
     station:str
+
+
+class ErpSku(BaseModel):
+    erpsku:str
+    page:Optional[int] = 1
+    size:Optional[int] = 1000

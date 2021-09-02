@@ -15,6 +15,7 @@ from public_function import query_frequently_table_info, public_function
 from sql_app import models, schema, database, crud, query_table
 import static
 from sql_app.database import CONN_DB
+from sql_app import models as app_models
 
 # 使用fastapi-crudrouter快速构建curd
 models.Base.metadata.create_all(bind=database.db_connect.create_engine())
@@ -173,7 +174,27 @@ def query_kws_by_erpsku(token: str,erpsku:str,page:int=1,size:int=1000,db:Sessio
     if token != static.TOKEN:
         raise HTTPException(status_code=404, detail="TOKEN ERROR")
     # 选定特定的列
-    chooseColumns=['station','customer_search_term','updatetime']
+    chooseColumns=['station','customer_search_term','updatetime','erpsku']
+    queryInfo = crud.query_high_quality_words(db=db,erpsku=erpsku,skip=page-1,pageLimit=size,chooseColumns=chooseColumns)
+    if isinstance(queryInfo,str):
+        return {'msg':'fail','detail':queryInfo}
+    logger.info(f'查询共享关键词.')
+    return {'msg':'success','length':len(queryInfo),'data':queryInfo}
+
+
+# 查询erpsku 备份
+@databaseRouters.get('/query_kws_by_erpsku_other/',summary="查询共享关键词")
+def query_kws_by_erpsku_other(token: str,erpskuInfo:app_models.ErpSku=Body(...,embed=False),db:Session = Depends(get_db_kws)):
+    if token != static.TOKEN:
+        raise HTTPException(status_code=404, detail="TOKEN ERROR")
+    # 选定特定的列
+    erpskuInfo = erpskuInfo.dict()
+    if 'erpsku' in erpskuInfo.keys():
+        return {'msg':'fail','detail':'缺少必要的参数erpsku'}
+    erpsku = erpskuInfo.get('erpsku')
+    page = erpskuInfo.get('page',1)
+    size = erpskuInfo.get('size',1000)
+    chooseColumns=['station','customer_search_term','updatetime','erpsku']
     queryInfo = crud.query_high_quality_words(db=db,erpsku=erpsku,skip=page-1,pageLimit=size,chooseColumns=chooseColumns)
     if isinstance(queryInfo,str):
         return {'msg':'fail','detail':queryInfo}

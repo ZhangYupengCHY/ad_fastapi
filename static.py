@@ -14,7 +14,7 @@ import hashlib
 TOKEN = "468a998a670b1ed7695cd0f5ac3850db"
 
 # 站点文件保存路径
-STATIONFIVEFILESSAVEFOLDER = r"E:\AD_WEB\file_dir\station_folder"
+STATIONFIVEFILESSAVEFOLDER = r"F:\station_folder"
 
 
 # 远程五表请求文件保存路径
